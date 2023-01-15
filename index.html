@@ -51,7 +51,7 @@
 
 
         .bar-img {
-            background: url(/images/bg-0.png);
+            background: url(https://raw.githubusercontent.com/CodestarGames/premierDonation/master/images/bg-0.png);
             background-repeat: no-repeat;
             width: 100%;
             height: 100%;
@@ -66,7 +66,7 @@
 
         .bar-mario {
             z-index: 100;
-            background: url(/images/premierSMW.gif);
+            background: url(https://raw.githubusercontent.com/CodestarGames/premierDonation/master/images/premierSMW.gif);
             top: 52px;
             background-repeat: no-repeat;
             width: 100%;
@@ -93,6 +93,8 @@
 <script type="application/javascript">
     // //GoalLoad
 
+    let resURL = 'https://raw.githubusercontent.com/CodestarGames/premierDonation/master/images/'
+
     $('.goal-cont__title').html("goal title");
     $('.goal-bar__current').text(0);
     $('.goal-bar__total').text(100);
@@ -101,7 +103,7 @@
         return Math.floor(number / 10) * 10;
     }
 
-    function handleAnimate(title, currentGains, currentGoal, percentageAchieved) {
+    function handleAnimate(currentGains, currentGoal, percentageAchieved, title = "test goal") {
 
         //GoalEvent
         $('.goal-cont__title').html(title);
@@ -111,21 +113,21 @@
         if(percentageAchieved === 100) {
             $('.bar-mario')
                 .animate({"left": percentageAchieved + "%"}, 150, () => {
-                    $('.bar-mario').css({background: `url(/images/premierSMW-jump.png) no-repeat`})
+                    $('.bar-mario').css({background: `url(${resURL}premierSMW-jump.png) no-repeat`})
                 })
                 .animate({"top": "32px"}, 150, () => {
-                    $('.bar-img').css({background: `url(/images/bg-1.png) no-repeat`})
+                    $('.bar-img').css({background: `url(${resURL}/bg-1.png) no-repeat`})
                 })
                 .animate({"top": "52px"}, 150, () => {
-                    $('.bar-mario').css({background: `url(/images/premierSMW-idle.png) no-repeat`})
+                    $('.bar-mario').css({background: `url(${resURL}/premierSMW-idle.png) no-repeat`})
                 })
 
         }
         else {
-            $('.bar-mario').css({background: `url(/images/premierSMW-jump.png) no-repeat`})
+            $('.bar-mario').css({background: `url(${resURL}/premierSMW-jump.png) no-repeat`})
                 .animate({"top": "32px"}, 200)
                 .animate({"top": "52px"}, 200, () => {
-                    $('.bar-mario').css({background: `url(/images/premierSMW.gif) no-repeat`})
+                    $('.bar-mario').css({background: `url(${resURL}/premierSMW.gif) no-repeat`})
                 })
                 .animate({"left": percentageAchieved + "%"})
 
@@ -133,7 +135,7 @@
         }
         $('.goal-bar__current').text(currentDonations);
     }
-    //
+
     // setTimeout(() => {
     //     let title = "Goal Title";
     //     let offlineDonations = 0;
@@ -146,7 +148,7 @@
     //             currentGains += 50;
     //
     //         percentageAchieved = (currentGains / currentGoal) * 100;
-    //       handleAnimate(title, currentGains, currentGoal, percentageAchieved);
+    //       handleAnimate(currentGains, currentGoal, percentageAchieved);
     //     }, 1000)
     //
     // }, 500)
@@ -160,7 +162,7 @@
         let percentageAchieved = (currentGains / currentGoal) * 100;
 
         //GoalEvent
-        handleAnimate(title, currentGains, currentGoal, percentageAchieved);
+        handleAnimate(currentGains, currentGoal, percentageAchieved, title);
 
 
     });
@@ -172,7 +174,7 @@
         let percentageAchieved = (currentGains / currentGoal) * 100;
 
         //GoalEvent
-        handleAnimate(title, currentGains, currentGoal, percentageAchieved);
+        handleAnimate(currentGains, currentGoal, percentageAchieved);
 
     });
 
