@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @import url('http://db.onlinewebfonts.com/c/02a99e0391b31368f7257aa7ed824d8a?family=Super+Mario+World');
+
+        body {
+            background: cornflowerblue;
+        }
+        .goal-cont {
+            color: #f8d000;
+            display: flex;
+            flex-direction: column;
+            font-family: "Super Mario World";
+            justify-content: space-between;
+            margin: 0 32px;
+            padding: 6px 16px;
+            position: relative;
+            height: 116px;
+            max-width: 300px;
+        }
+
+        .goal-cont__progress {
+             background-color: #e02a2a;
+             height: 100%;
+             left: 0;
+             position: absolute;
+             top: 0;
+             transition: width 0.3s ease-out;
+         }
+
+        .goal-cont__title {
+            position: relative;
+            z-index: 100;
+            align-self: center;
+            /*-webkit-text-stroke: 1px black;*/
+            margin-top: 3px;
+            font-size: 14px;
+        }
+
+        .goal-cont__bar {
+             position: relative;
+             z-index: 100;
+            margin-left: 40px;
+            margin-top: 0px;
+            /*-webkit-text-stroke: 1px black;*/
+            font-size: 20px;
+        }
+
+
+        .bar-img {
+            background: url(/images/bg-0.png);
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        .mario-cont {
+            position: absolute;
+            width: 85%;
+            height: 80px;
+        }
+
+        .bar-mario {
+            z-index: 100;
+            background: url(/images/premierSMW.gif);
+            top: 52px;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div class='goal-cont'>
+
+    <div class='goal-cont__bar'>
+        <span class='goal-bar__current'></span> / <span class='goal-bar__total'></span>
+    </div>
+    <div class="mario-cont">
+        <div class="bar-mario"></div>
+    </div>
+    <div class="bar-img"></div>
+    <div class='goal-cont__title'></div>
+<!--    <div class="goal-cont__progress"></div>-->
+</div>
+<script type="application/javascript">
+    // //GoalLoad
+
+    $('.goal-cont__title').html("goal title");
+    $('.goal-bar__current').text(0);
+    $('.goal-bar__total').text(100);
+
+    function roundToNearest10(number) {
+        return Math.floor(number / 10) * 10;
+    }
+
+    function handleAnimate(title, currentGains, currentGoal, percentageAchieved) {
+
+        //GoalEvent
+        $('.goal-cont__title').html(title);
+        $('.goal-bar__current').text(currentGains);
+        $('.goal-bar__total').text(currentGoal);
+
+        if(percentageAchieved === 100) {
+            $('.bar-mario')
+                .animate({"left": percentageAchieved + "%"}, 150, () => {
+                    $('.bar-mario').css({background: `url(/images/premierSMW-jump.png) no-repeat`})
+                })
+                .animate({"top": "32px"}, 150, () => {
+                    $('.bar-img').css({background: `url(/images/bg-1.png) no-repeat`})
+                })
+                .animate({"top": "52px"}, 150, () => {
+                    $('.bar-mario').css({background: `url(/images/premierSMW-idle.png) no-repeat`})
+                })
+
+        }
+        else {
+            $('.bar-mario').css({background: `url(/images/premierSMW-jump.png) no-repeat`})
+                .animate({"top": "32px"}, 200)
+                .animate({"top": "52px"}, 200, () => {
+                    $('.bar-mario').css({background: `url(/images/premierSMW.gif) no-repeat`})
+                })
+                .animate({"left": percentageAchieved + "%"})
+
+
+        }
+        $('.goal-bar__current').text(currentDonations);
+    }
+    //
+    // setTimeout(() => {
+    //     let title = "Goal Title";
+    //     let offlineDonations = 0;
+    //     let currentGains = offlineDonations;
+    //     let currentGoal = 1000;
+    //     let percentageAchieved = (currentGains / currentGoal) * 100;
+    //
+    //     setInterval(() => {
+    //         if(currentGains < currentGoal)
+    //             currentGains += 50;
+    //
+    //         percentageAchieved = (currentGains / currentGoal) * 100;
+    //       handleAnimate(title, currentGains, currentGoal, percentageAchieved);
+    //     }, 1000)
+    //
+    // }, 500)
+
+    let offlineGains = 0;
+
+    document.addEventListener('goalLoad', function(obj) {
+        let title = obj.detail.title;
+        let currentGains = obj.detail.amount.current + offlineGains;
+        let currentGoal = obj.detail.amount.target;
+        let percentageAchieved = (currentGains / currentGoal) * 100;
+
+        //GoalEvent
+        handleAnimate(title, currentGains, currentGoal, percentageAchieved);
+
+
+    });
+
+    document.addEventListener('goalEvent', function(obj) {
+
+        let currentGains = obj.detail.amount.current + offlineGains;
+        let currentGoal = obj.detail.amount.target;
+        let percentageAchieved = (currentGains / currentGoal) * 100;
+
+        //GoalEvent
+        handleAnimate(title, currentGains, currentGoal, percentageAchieved);
+
+    });
+
+
+</script>
+</body>
+</html>
